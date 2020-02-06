@@ -5,4 +5,5 @@ export class User {
   role: string;
   status: string;
   token?: User;
+  designation: string;
 }

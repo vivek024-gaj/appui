@@ -16,10 +16,8 @@ import { AppComponent } from './app.component';
 // Import containers
 import { DefaultLayoutComponent } from './containers';
 
-import { P404Component } from './views/error/404.component';
-import { P500Component } from './views/error/500.component';
+
 import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -44,6 +42,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './views/_helper/jwt-interceptor';
 import { ErrorInterceptor } from './views/_helper/error-interceptor';
+import { P404Component } from './views/error/404.component';
+import { P500Component } from './views/error/500.component';
+import { AppMasterModule } from './views/app/app-master.module';
 
 @NgModule({
   imports: [
@@ -61,15 +62,15 @@ import { ErrorInterceptor } from './views/_helper/error-interceptor';
     ChartsModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AppMasterModule
   ],
   declarations: [
     AppComponent,
     APP_CONTAINERS,
     P404Component,
     P500Component,
-    LoginComponent,
-    RegisterComponent
+    LoginComponent
   ],
   providers: [
     { provide: LocationStrategy,  useClass: HashLocationStrategy, },

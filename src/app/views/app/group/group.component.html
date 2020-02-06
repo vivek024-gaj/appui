@@ -1,0 +1,79 @@
+<div class="animated fadeIn">
+    <form [formGroup]="groupForm" (ngSubmit)="submitForm()" novalidate>
+        <div class="row">
+            <!-- Form -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header"><strong>Add Group</strong><small> Form</small></div>
+                    <div class="card-body">
+
+                        <div *ngIf="isSubmitted">
+                            <div class="alert alert-success" *ngIf="isSuccess">
+                                <strong> {{_statusMsg}} Please Wait ..</strong>.
+                            </div>
+
+                            <div class="alert alert-danger" *ngIf="!isSuccess ">
+                                <strong>{{_statusMsg}}</strong>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Group Name</label>
+                                    <input type="text" value="" name="name" formControlName="name" class="form-control" [ngClass]="{'is-invalid': groupForm.get('name').touched && groupForm.get('name').invalid}">
+
+                                    <div class="invalid-feedback">
+                                        <div>Please Add Group Name</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <!--  -->
+                        <i class="fa fa-align-justify"></i> All Groups
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 20px;">ID</th>
+                                    <th>Name</th>
+                                    <th style="width: 100px; text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of groupList; let i = index ">
+                                    <td>{{i + 1}}</td>
+                                    <td>{{data.name}}</td>
+                                    <td class="text-right">
+                                        <button class="btn btn-brand btn-sm btn-primary" type="button" style="margin-bottom: 4px" (click)="editGroup(data)">
+                                          <i class="fa fa-pencil-square-o"></i>
+                                      </button>
+                                        <button class="btn btn-brand btn-sm btn-youtube" type="button" (click)="deleteFieldValue(data,i)" style="margin-bottom: 4px">
+                                          <i class="fa fa-close"></i>
+                                      </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- <app-confirmation-madal (hideModal)="modalConfirmation($event)" #confirmModal></app-confirmation-madal> -->

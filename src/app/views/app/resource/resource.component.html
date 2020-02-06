@@ -1,0 +1,212 @@
+<div class="animated fadeIn">
+
+    <div class="row">
+        <!-- Form -->
+        <div class="col-md-12">
+            <!-- status msg start-->
+            <div class="card" *ngIf="isSubmitted">
+                <div class="card-body">
+                    <div>
+                        <div class="alert alert-success" *ngIf="isSuccess">
+                            <strong> {{_statusMsg}} Please Wait ..</strong>.
+                        </div>
+                        <div class="alert alert-danger" *ngIf="!isSuccess ">
+                            <strong>{{_statusMsg}}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- status msg end-->
+
+
+            <form [formGroup]="resourceForm" (ngSubmit)="submitForm()" novalidate>
+                <div class="card">
+                    <div class="card-header"><strong>Add Resource</strong></div>
+                    <div class="card-body">
+
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Resource Group </label>
+                                    <select formControlName="resourceGroupId" class="form-control" [ngClass]="{'is-invalid': resourceForm.get('resourceGroupId').touched && resourceForm.get('resourceGroupId').invalid}">
+                                      <option value="">-- Select Group --</option>
+                                      <option *ngFor="let resourceGroup of resourceGroupList"
+                                          value="{{resourceGroup.id}}">
+                                          {{resourceGroup.resourceGroupName}}
+                                      </option>
+                                  </select>
+                                    <div class="invalid-feedback">
+                                        <div>Please Resource Group</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" name="resourceName" formControlName="resourceName" class="form-control" [ngClass]="{'is-invalid': resourceForm.get('resourceName').touched && resourceForm.get('resourceName').invalid}">
+                                    <div class="invalid-feedback">
+                                        <div>Please Add Resource Name</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>URI</label>
+                                    <input type="text" formControlName="resourceUrl" class="form-control" [ngClass]="{'is-invalid': subResourceForm.get('resourceUrl').touched && subResourceForm.get('resourceUrl').invalid}">
+
+                                    <div class="invalid-feedback">
+                                        <div>Please Add URI</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <input type="button" class="btn btn-primary" value="Submit" (click)="submitResourceForm()">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form [formGroup]="subResourceForm" (ngSubmit)="submitForm()" novalidate>
+                <div class="card">
+                    <div class="card-header"><strong>Add Sub Resource</strong></div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Parent Name </label>
+                                    <select formControlName="parentId" class="form-control" [ngClass]="{'is-invalid': subResourceForm.get('parentId').touched && subResourceForm.get('parentId').invalid}">
+                                      <option selected>-- Select Group --</option>
+                                      <option *ngFor="let parent of parentResources" value="{{parent.id}}">
+                                          {{parent.resourceName}}
+                                      </option>
+                                  </select>
+                                    <div class="invalid-feedback">
+                                        <div>Please Select Group</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" name="name" formControlName="resourceName" class="form-control" [ngClass]="{'is-invalid': subResourceForm.get('resourceName').touched && subResourceForm.get('resourceName').invalid}">
+                                    <div class="invalid-feedback">
+                                        <div>Please Add Resource Name</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="row">
+                          <div class="col-sm-12">
+                              <div class="form-group">
+                                  <label>Group Name </label>
+                                  <select formControlName="groupId" class="form-control"
+                                      [ngClass]="{'is-invalid': subResourceForm.get('groupId').touched && subResourceForm.get('groupId').invalid}">
+                                      <option selected>-- Select Group --</option>
+                                      <option *ngFor="let group of groupList" value="{{group.id}}">{{group.name}}
+                                      </option>
+                                  </select>
+                                  <div class="invalid-feedback">
+                                      <div>Please Select Group</div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div> -->
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>URI</label>
+                                    <input type="text" formControlName="resourceUrl" class="form-control" [ngClass]="{'is-invalid': subResourceForm.get('resourceUrl').touched && subResourceForm.get('resourceUrl').invalid}">
+
+                                    <div class="invalid-feedback">
+                                        <div>Please Add URI</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <input type="button" class="btn btn-primary" value="Submit" (click)="submitSubResourceForm()">
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+
+
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> All Resources
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                        <thead class="thead-light">
+                            <tr>
+                                <th style="width: 20px;">ID</th>
+                                <th>Name</th>
+                                <!-- <th>Group</th> -->
+                                <th>URI</th>
+                                <th style="width: 100px; text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of parentResources; let i = index ">
+                                <td>{{i + 1}}</td>
+                                <td>{{data.resourceName}}</td>
+                                <!-- <td>{{data.groupName}}</td> -->
+                                <td>{{data.resourceUrl}}</td>
+
+                                <td class="text-right">
+                                    <button class="btn btn-success btn-sm move-right" type="button" style="margin-bottom: 4px" (click)="editResource(data)">
+                                      <i class="fa fa-pencil-square-o"></i>
+                                  </button>
+                                    <button class="btn btn-danger btn-sm move-right" type="button" (click)="deleteResource(data,i)" style="margin-bottom: 4px">
+                                      <i class="fa fa-close"></i>
+                                  </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- <ul class="pagination">
+                      <li class="page-item">
+                          <a class="page-link" href="#">Prev</a>
+                      </li>
+                      <li class="page-item active">
+                          <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="#">2</a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="#">4</a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="#">Next</a>
+                      </li>
+                  </ul> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <app-confirmation-madal (hideModal)="modalConfirmation($event)" #confirmModal></app-confirmation-madal> -->
