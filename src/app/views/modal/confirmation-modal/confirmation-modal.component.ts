@@ -6,6 +6,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   templateUrl: './confirmation-modal.component.html'
 })
 export class ConfirmationModalComponent implements OnInit {
+
   @ViewChild('confirmModal', { static: false }) public confirmModal: ModalDirective;
 
   @Output('hideModal') hideModal = new EventEmitter<any>();
@@ -29,4 +30,5 @@ export class ConfirmationModalComponent implements OnInit {
     this.confirmModal.hide();
     this.hideModal.emit(this.inputData);
   }
+
 }

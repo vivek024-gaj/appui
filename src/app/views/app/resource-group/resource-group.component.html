@@ -1,3 +1,93 @@
-<p>
-  resource-group works!
-</p>
+<div class="animated fadeIn">
+    <form [formGroup]="resourceGroupForm" (ngSubmit)="submitForm()" novalidate>
+        <div class="row">
+            <!-- Form -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header"><strong>Add Resource Group</strong></div>
+                    <div class="card-body">
+
+                        <div *ngIf="isSubmitted">
+                            <div class="alert alert-success" *ngIf="isSuccess">
+                                <strong> {{_statusMsg}} Please Wait ..</strong>.
+                            </div>
+
+                            <div class="alert alert-danger" *ngIf="!isSuccess ">
+                                <strong>{{_statusMsg}}</strong>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Resource Group Name</label>
+                                    <input type="text" name="name" formControlName="resourceGroupName" class="form-control" [ngClass]="{'is-invalid': resourceGroupForm.get('resourceGroupName').touched && resourceGroupForm.get('resourceGroupName').invalid}">
+
+                                    <div class="invalid-feedback">
+                                        <div>Please Add Resource Group Name</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Menu Placement</label>
+                                    <input type="number" name="name" formControlName="menuPlacement" class="form-control" [ngClass]="{'is-invalid': resourceGroupForm.get('menuPlacement').touched && resourceGroupForm.get('menuPlacement').invalid}">
+
+                                    <div class="invalid-feedback">
+                                        <div>Please Add Resource Group Name</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <!--  -->
+                        <i class="fa fa-align-justify"></i> All Resource Groups
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 20px;">ID</th>
+                                    <th>Resource Group Name</th>
+                                    <th>Menu Placement</th>
+                                    <th style="width: 100px; text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of resourceGroupList; let i = index ">
+                                    <td>{{i + 1}}</td>
+                                    <td>{{data.resourceGroupName}}</td>
+                                    <td>{{data.menuPlacement}}</td>
+                                    <td class="text-right">
+                                        <button class="btn btn-brand btn-sm btn-primary" type="button" style="margin-bottom: 4px" (click)="editResourceGroup(data)">
+                                          <i class="fa fa-pencil-square-o"></i>
+                                      </button>
+                                        <button class="btn btn-brand btn-sm btn-youtube" type="button" (click)="deleteFieldValue(data,i)" style="margin-bottom: 4px">
+                                          <i class="fa fa-close"></i>
+                                      </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<app-confirmation-modal (hideModal)="modalConfirmation($event)" #confirmModal></app-confirmation-modal>

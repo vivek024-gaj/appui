@@ -50,7 +50,7 @@ export const routes: Routes = [
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
-        path: 'app',
+        path: 'acl',
         canActivate: [AuthGuard] ,
         loadChildren: () => import('./views/app/app-master.module').then(m => m.AppMasterModule)
       }

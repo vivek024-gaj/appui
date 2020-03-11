@@ -1,0 +1,48 @@
+<div class="animated fadeIn">
+    <form novalidate>
+        <div class="row">
+            <!-- Form -->
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> All Roles
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 20px;">ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Group</th>
+                                    <th>Resource</th>
+                                    <th style="width: 100px; text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of rolelist; let i = index ">
+                                    <td>{{i + 1}}</td>
+                                    <td>{{data.name}}</td>
+                                    <td>{{data.description}}</td>
+                                    <td>
+                                        <ng-container *ngFor="let res of data.restrictions"><span *ngIf="res.groupName">
+                                                {{res.groupName}},</span></ng-container>
+                                    </td>
+                                    <td>
+                                        <ng-container *ngFor="let res of data.restrictions"><span *ngIf="res.resourceName"> {{res.resourceName}},</span></ng-container>
+                                    </td>
+                                    <td class="text-right">
+                                        <button class="btn btn-success btn-sm move-right" type="button" style="margin-bottom: 4px" [routerLink]="['/acl/role/manage-role/', data.id]">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

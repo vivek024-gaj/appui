@@ -1,0 +1,141 @@
+<div class="animated fadeIn">
+    <form [formGroup]="manageRoleForm" (ngSubmit)="submitForm(manageRoleForm.value)" novalidate>
+        <div class="row">
+            <!-- Form -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header"><strong>Manage Roles</strong><small> Form</small></div>
+                    <div class="card-body">
+
+                        <!-- status msg start-->
+                        <div *ngIf="isSubmitted">
+                            <div class="alert alert-success" *ngIf="isSuccess">
+                                <strong> {{_statusMsg}} Please Wait ..</strong>.
+                            </div>
+
+                            <div class="alert alert-danger" *ngIf="!isSuccess ">
+                                <strong>{{_statusMsg}}</strong>
+                            </div>
+                        </div>
+                        <!-- status msg end-->
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Role </label>
+                                    <select formControlName="roleId" class="form-control" [ngClass]="{'is-invalid': manageRoleForm.get('roleId').touched && manageRoleForm.get('roleId').invalid}" (change)="getManageRoleList()">
+                                      <option value="" selected>-- Select Role --</option>
+                                      <option *ngFor="let r of rolelist" value="{{r.id}}"> {{r.name}}
+                                      </option>
+                                  </select>
+
+                                    <div class="invalid-feedback">
+                                        <div>Please Select Role</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Resource </label>
+                                    <select formControlName="resourceId" class="form-control" (change)="getSubResource()" [ngClass]="{'is-invalid': manageRoleForm.get('resourceId').touched && manageRoleForm.get('resourceId').invalid}">
+                                      <option selected value="">-- Select Resource --</option>
+                                      <option *ngFor="let res of resourceList" value="{{res.id}}">
+                                          {{res.resourceName}}
+                                      </option>
+                                  </select>
+                                    <div class="invalid-feedback">
+                                        <div>Please Select Resource</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Sub Resource </label>
+                                    <div class="custom-control custom-checkbox">
+                                        <label formArrayName="subResourceId" *ngFor="let subRes of manageRoleForm.controls.subResourceId['controls']; let i = index" [hidden]="getsubResourceDisable(subResourceList[i].id)" class="col-sm-6 col-md-3 col-lg-2">
+                                          <input type="checkbox" [formControlName]="i"
+                                              (change)="test(subRes,subResourceList[i].id)">
+                                          {{subResourceList[i].resourceName}}
+                                      </label>
+                                    </div>
+
+                                    <div class="invalid-feedback">
+                                        <div>Please Select Sub Resource</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="row">
+                          <div class="col-sm-12">
+                              <div class="form-group">
+                                  <label>Group</label>
+
+                                  <div class="custom-control custom-checkbox">
+                                      <ng-container
+                                          *ngFor="let g of manageRoleForm.controls.group.controls; let i = index">
+                                          <label formArrayName="group" *ngIf="!getGroupDisable(groupList[i].id)">
+                                              <input type="checkbox" [formControlName]="i">
+                                              {{groupList[i].name}}
+                                          </label>
+                                      </ng-container>
+                                  </div>
+
+                              </div>
+                          </div>
+                      </div> -->
+
+                        <div class="card-footer">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> List
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width: 20px;">ID</th>
+                                    <th>Role</th>
+                                    <th>Resource</th>
+                                    <th>Resource URL</th>
+                                    <!-- <th>Group</th> -->
+                                    <th style="width: 100px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of manageRoleArr; let i = index ">
+                                    <td>{{i + 1}}</td>
+                                    <td>{{data.roleName}}</td>
+                                    <td>{{data.resourceName}}</td>
+                                    <td>{{data.resourceURL}}</td>
+                                    <!-- <td>{{data.groupName}}</td> -->
+                                    <td class="text-right">
+                                        <button class="btn btn-brand btn-sm btn-youtube" type="button" (click)="deleteFieldValue(data,i)" style="margin-bottom: 4px">
+                                          <i class="fa fa-close"></i>
+                                      </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<app-confirmation-modal (hideModal)="modalConfirmation($event)" #confirmModal></app-confirmation-modal>

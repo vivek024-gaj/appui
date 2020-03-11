@@ -2,13 +2,12 @@ import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { AppMasterService } from '../../../service/app-master.service';
+import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-resource-group',
-  templateUrl: './resource-group.component.html',
-  styleUrls: ['./resource-group.component.scss']
+  templateUrl: './resource-group.component.html'
 })
 export class ResourceGroupComponent implements OnInit {
 

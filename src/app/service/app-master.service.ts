@@ -8,6 +8,7 @@ import { Group } from '../model/group';
 import { ManageRole } from '../model/manage-roles';
 import { ResourceGroup } from '../model/resource-group';
 import { Resource } from '../model/resource';
+import { Role } from '../model/role';
 
 @Injectable({
   providedIn: 'root'
@@ -151,13 +152,13 @@ GetAllResource(): Observable<Resource> {
 
 // GET
 GetParentsResource(): Observable<Resource> {
-  return this.http.get<Resource>(this.baseUrl + '/resource/parents')
+  return this.http.get<Resource>(this.baseUrl + '/parents')
     .pipe(retry(1), catchError(this.errorHandl));
 }
 
 // GET
 GetAllSubResourceById(id): Observable<Resource> {
-  return this.http.get<Resource>(this.baseUrl + '/resource/parents/' + id)
+  return this.http.get<Resource>(this.baseUrl + '/parents/' + id)
     .pipe(retry(1), catchError(this.errorHandl));
 }
 
@@ -170,6 +171,58 @@ UpdateResource(id, data): Observable<ResponseMessage> {
 DeleteResource(id) {
   return this.http.delete<ResponseMessage>(this.baseUrl + '/resource/' + id + '/delete', this.httpOptions)
     .pipe(retry(1), catchError(this.errorHandl));
+}
+
+// POST
+addRole(data): Observable<ResponseMessage> {
+  return this.http.post<ResponseMessage>(this.baseUrl + '/add', JSON.stringify(data), this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.errorHandl)
+    )
+}
+
+addRole111(data): Observable<any> {
+  return this.http.post<any>(this.baseUrl + '/add', JSON.stringify(data), this.httpOptions);
+}
+
+
+// GET By ID
+GetRole(id): Observable<Role> {
+  return this.http.get<Role>(this.baseUrl + '/' + id)
+    .pipe(
+      retry(1),
+      catchError(this.errorHandl)
+    )
+}
+
+// GET
+GetAllRole(): Observable<Role> {
+  return this.http.get<Role>(this.baseUrl + '/list')
+    .pipe(
+      retry(1),
+      catchError(this.errorHandl)
+    )
+}
+
+// PUT
+UpdateRole(id, data): Observable<ResponseMessage> {
+  return this.http.put<ResponseMessage>(this.baseUrl + '/' + id + '/update', JSON.stringify(data), this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.errorHandl)
+    )
+}
+
+
+
+// DELETE
+DeleteRole(id) {
+  return this.http.delete<ResponseMessage>(this.baseUrl + '/' + id + '/delete', this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.errorHandl)
+    )
 }
 //
 // Error handling

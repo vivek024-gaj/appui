@@ -20,17 +20,17 @@ export class ErrorInterceptor implements HttpInterceptor {
 
             if (err.status === 0) {
                 err.error = {};
-                err.error.status = err.status
+                err.error.status = err.status;
                 err.error.success = false;
                 err.error.error = 'Server Unavailable!';
                 this.router.navigateByUrl('error/' + JSON.stringify(err.error));
             } else if (err.status === 403) {
-                err.error.status = err.status
+                err.error.status = err.status;
                 this.router.navigateByUrl('error/' + JSON.stringify(err.error));
             } else if (err.status === 500) {
                 this.router.navigateByUrl('500');
             } else if (err.error && (err.error.errorCode = 'CDTERR-006')) {
-                err.error.status = err.status
+                err.error.status = err.status;
                 this.router.navigateByUrl('error/' + JSON.stringify(err.error).replace(/\//g, ','));
             } else {
                 if (!err.error) {

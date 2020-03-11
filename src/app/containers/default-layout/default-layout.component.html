@@ -20,7 +20,8 @@
     </ul>
 </app-header>
 <div class="app-body">
-    <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized">
+
+    <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
         <div class="sidebar-header"><img alt="Avatar" class="img-avatar" src="assets/img/avatars/1.jpg">
             <div><strong>{{currentUser.name}}</strong></div>
         </div>
@@ -29,6 +30,14 @@
     </app-sidebar>
     <!-- Main content -->
     <main class="main">
+        <cui-breadcrumb>
+            <!-- Breadcrumb Menu-->
+            <li class="breadcrumb-menu d-md-down-none">
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+
+                </div>
+            </li>
+        </cui-breadcrumb>
         <div class="container-fluid">
             <router-outlet></router-outlet>
         </div>

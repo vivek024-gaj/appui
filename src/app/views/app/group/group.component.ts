@@ -1,8 +1,8 @@
 import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { AppMasterService } from '../../../service/app-master.service';
+import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 
 
 @Component({

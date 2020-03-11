@@ -11,13 +11,20 @@ import { DOCUMENT } from '@angular/common';
 })
 export class DefaultLayoutComponent implements OnDestroy, OnInit {
 
+
+
   public navItems = navItems;
-  public sidebarMinimized = true;
+  public sidebarMinimized = false;
   private changes: MutationObserver;
   public element: HTMLElement;
   currentUser: User;
   notificationCount: any;
   notification: Notification;
+
+
+  toggleMinimize(e) {
+    this.sidebarMinimized = e;
+  }
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router,

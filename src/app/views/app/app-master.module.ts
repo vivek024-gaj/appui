@@ -9,17 +9,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ResourceGroupComponent } from './resource-group/resource-group.component';
-import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
+import { GlobalModule } from '../modal/global.module';
+import { RoleComponent } from './role/role.component';
+import { ManageRoleComponent } from './role/manage-role/manage-role.component';
 
 @NgModule({
   declarations: [ProfileComponent, GroupComponent,
-    ResourceComponent, ResourceGroupComponent, ConfirmationModalComponent],
+    ResourceComponent, ResourceGroupComponent, RoleComponent, ManageRoleComponent],
   imports: [
     CommonModule,
     AppMasterRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
+    GlobalModule
   ],
 })
 export class AppMasterModule { }
