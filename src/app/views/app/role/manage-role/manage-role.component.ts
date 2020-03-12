@@ -24,6 +24,7 @@ export class ManageRoleComponent implements OnInit {
   resourceList: any;
   subResourceList: any;
   groupList: any;
+  resourceGroupList: any;
 
   editRoleId: any
   subResourceIdList: any = [];
@@ -62,12 +63,18 @@ export class ManageRoleComponent implements OnInit {
       }
     }, err => {
     })
+    this.appMasterService.GetAllResourceGroup().subscribe((data: any) => {
+      this.resourceGroupList = data;
+      console.log('GetAllResourceGroup', this.resourceGroupList);
+    }, err => {
+      console.log('GetAllResourceGroup', err);
+    })
   }
 
   getSubResource() {
     this.appMasterService.GetAllSubResourceById(this.manageRoleForm.value.resourceId).subscribe((data: any) => {
       this.subResourceList = data;
-      this.manageRoleForm.controls.subResourceId = new FormArray([])
+      this.manageRoleForm.controls.subResourceId = new FormArray([]);
       this.subResourceIdList = [];
       for (let subRes of this.subResourceList) {
         let control: any = new FormControl(); // if first item set to true, else false
@@ -99,8 +106,10 @@ export class ManageRoleComponent implements OnInit {
       id: [''],
       roleId: ['', Validators.required],
       resourceId: [''],
+      // resourceGroupId: [''],
       subResourceId: new FormArray([]),
       group: new FormArray([]),
+      // resourceGroup: new FormArray([]),
       groupId: [''],
 
     })
@@ -157,6 +166,7 @@ export class ManageRoleComponent implements OnInit {
 
     if (ManageRoleList && ManageRoleList.length > 0) {
       this.appMasterService.addListManageRole(ManageRoleList).subscribe((res: any) => {
+        console.log('res', res);
         this.isSubmitted = true;
         if (res) {
           this.isSuccess = res.success;

@@ -1,3 +1,128 @@
-<p>
-  profile works!
-</p>
+<div class="card">
+    <div class="card-header">Edit your profile</div>
+    <div class="card-body">
+        <div *ngIf="isSubmitted">
+            <div class="alert alert-success" *ngIf="isSuccess">
+                <strong> {{_statusMsg}}  Please Wait ..</strong>.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="!isSuccess ">
+                <strong>{{_statusMsg}}</strong>
+            </div>
+        </div>
+
+        <form [formGroup]="updateUserForm" (ngSubmit)="submitUpdateForm()" novalidate>
+
+            <div class="form-group">
+                <label>Name </label>
+                <input type="text" formControlName="userName" class="form-control" [ngClass]="{'is-invalid': updateUserForm.get('userName').touched && updateUserForm.get('userName').invalid}">
+
+                <div class="invalid-feedback">
+                    <div>Name is required</div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <div class="input-group mb-4">
+
+                    <input type="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': updateUserForm.get('email').touched && updateUserForm.get('email').invalid}">
+                    <div class="invalid-feedback">
+                        <div>Email is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Role</label>
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-email"></i></span>
+                    </div>
+                    <input type="text" formControlName="role" class="form-control" [ngClass]="{'is-invalid': updateUserForm.get('role').touched && updateUserForm.get('role').invalid}">
+                    <div class="invalid-feedback">
+                        <div>Role is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-email"></i></span>
+                    </div>
+                    <input type="text" formControlName="status" class="form-control" [ngClass]="{'is-invalid': updateUserForm.get('status').touched && updateUserForm.get('status').invalid}">
+                    <div class="invalid-feedback">
+                        <div>Status is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-actions">
+                <button type="submit" class="btn btn-primary px-4">Submit</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Change Password</div>
+    <div class="card-body">
+
+        <div *ngIf="isSubmitted">
+            <div class="alert alert-success" *ngIf="isSuccessP">
+                <strong> {{_statusMsg}}  Please Wait ..</strong>.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="!isSuccessP ">
+                <strong>{{_statusMsg}}</strong>
+            </div>
+        </div>
+
+        <form [formGroup]="changePasswordForm" (ngSubmit)="submitPasswordForm()" novalidate>
+            <div class="form-group">
+                <label>Old Password</label>
+                <div class="input-group mb-4">
+                    <input type="text" formControlName="old_pass" class="form-control" [ngClass]="{'is-invalid': changePasswordForm.get('old_pass').touched && changePasswordForm.get('old_pass').invalid}">
+                    <div class="invalid-feedback">
+                        <div>Old password is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>New Password</label>
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input type="text" formControlName="new_pass" class="form-control" [ngClass]="{'is-invalid': changePasswordForm.get('new_pass').touched && changePasswordForm.get('new_pass').invalid}">
+                    <div class="invalid-feedback">
+                        <div>New password is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm New Password</label>
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input type="password" formControlName="conf_pass" class="form-control" [ngClass]="{'is-invalid': changePasswordForm.get('conf_pass').touched && changePasswordForm.get('conf_pass').invalid}">
+                    <div class="invalid-feedback">
+                        <div *ngIf="passwordForm.conf_pass?.errors?.required">Confirm Password is required</div>
+                        <div *ngIf="passwordForm.conf_pass?.errors?.mustMatch">Passwords must match</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-actions">
+                <button type="submit" class="btn btn-primary px-4">Change Password</button>
+            </div>
+
+        </form>
+    </div>
+</div>
