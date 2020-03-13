@@ -14,16 +14,21 @@ export class ManageRoleComponent implements OnInit {
   @ViewChild('confirmModal', { static: false }) public confirmModal: ConfirmationModalComponent;
 
 
+
   isSubmitted: boolean = false;
   isSuccess: any;
   _statusMsg: any;
+  restriction: any;
+  data = ['Resource Group', 'Resources', 'Sub Resources'];
 
   manageRoleForm: FormGroup;
   manageRoleArr: any = [];
   rolelist: any;
   resourceList: any;
+  resources: any;
   subResourceList: any;
   groupList: any;
+
   resourceGroupList: any;
 
   editRoleId: any
@@ -33,10 +38,11 @@ export class ManageRoleComponent implements OnInit {
     private appMasterService: AppMasterService,
     private actRoute: ActivatedRoute,
 
-  ) { this.manageRole(); this.loadData(); }
+  ) { this.manageRole(); this.loadData();}
 
   ngOnInit() {
     this.editRoleId = this.actRoute.snapshot.paramMap.get('id');
+
   }
 
 
@@ -60,15 +66,29 @@ export class ManageRoleComponent implements OnInit {
       for (let group of this.groupList) {
         const control = new FormControl(); // if first item set to true, else false
         (this.manageRoleForm.controls.group as FormArray).push(control);
+        // console.log('groupList', this.groupList);
       }
     }, err => {
     })
     this.appMasterService.GetAllResourceGroup().subscribe((data: any) => {
       this.resourceGroupList = data;
-      console.log('GetAllResourceGroup', this.resourceGroupList);
+      for (let group of this.resourceGroupList) {
+        const control = new FormControl(); // if first item set to true, else false
+        (this.manageRoleForm.controls.resourceGroup as FormArray).push(control);
+        // console.log('GetAllResourceGroup', this.resourceGroupList);
+      }
+      // console.log('GetAllResourceGroup', this.resourceGroupList);
     }, err => {
       console.log('GetAllResourceGroup', err);
-    })
+    });
+    this.appMasterService.GetParentsResource().subscribe((data: any) => {
+      this.resources = data;
+      for (let resource of this.resources) {
+        const control = new FormControl(); // if first item set to true, else false
+        (this.manageRoleForm.controls.resourceFormArray as FormArray).push(control);
+        // console.log('GetAllResources', this.resources);
+      }
+    });
   }
 
   getSubResource() {
@@ -84,6 +104,9 @@ export class ManageRoleComponent implements OnInit {
     }, err => {
     })
   }
+  getResourceGroup() {
+    this.appMasterService.GetAllResourceGroup().subscribe((data: any) => {})
+  }
 
   // loadManageRoleArr() {
   //   this.manageRoleService.GetAllManageRole().subscribe((data: any) => {
@@ -95,6 +118,7 @@ export class ManageRoleComponent implements OnInit {
   getManageRoleList() {
     this.appMasterService.GetAllManageRoleByRoleId(this.manageRoleForm.value.roleId).subscribe((data: any) => {
       this.manageRoleArr = data;
+      console.log('manageRoleArr', this.manageRoleArr);
     }, err => { })
 
   }
@@ -106,12 +130,15 @@ export class ManageRoleComponent implements OnInit {
       id: [''],
       roleId: ['', Validators.required],
       resourceId: [''],
-      // resourceGroupId: [''],
+      // restriction: [''],
+      restrictionId: [''],
       subResourceId: new FormArray([]),
       group: new FormArray([]),
-      // resourceGroup: new FormArray([]),
+      resourceGroup: new FormArray([]),
       groupId: [''],
-
+      resourceGroupId: [''],
+      resourceFormArray: new FormArray([]),
+      resourceFormId: ['']
     })
 
   }
@@ -120,9 +147,26 @@ export class ManageRoleComponent implements OnInit {
     if (subRes.value) {
       this.subResourceIdList.push(id);
     } else {
-      this.subResourceIdList.splice(this.subResourceIdList.indexOf(id), 1)
+      this.subResourceIdList.splice(this.subResourceIdList.indexOf(id), 1);
     }
   }
+
+  resGroup(rGrp, id) {
+    if (rGrp.value) {
+      this.resourceGroupList.push(id);
+    } else {
+      this.resourceGroupList.splice(this.resourceGroupList.indexOf(id), 1);
+    }
+  }
+  res(res, id) {
+    if (res.value) {
+      this.resources.push(id);
+    } else {
+      this.resources.splice(this.resources.indexOf(id), 1);
+    }
+  }
+
+
 
   submitForm(val) {
 
@@ -141,16 +185,30 @@ export class ManageRoleComponent implements OnInit {
     if (selectedSubResources && selectedSubResources.length > 0) { } else {
       selectedSubResources = this.subResourceIdList;
     }
+    let selectedResGroup = this.manageRoleForm.value.resourceGroup.map((v, i) => v ? this.resourceGroupList[i].id : null)
+      .filter(v => v !== null);
+
+      let selectedResources = this.manageRoleForm.value.resourceFormArray.map((v, i) => v ? this.resources[i].id : null)
+      .filter(v => v !== null);
+
+    // if (selectedResGroup && selectedResGroup.length > 0) { } else {
+    //   selectedResGroup = this.resourceGroupList;
+    // }
+
+
 
 
     for (let id in selectedSubResources) {
       let manageRole: any = {};
       manageRole.groupId = "";
       manageRole.id = "";
+      manageRole.resourceGroupId = "";
       manageRole.resourceId = selectedSubResources[id]
       manageRole.roleId = this.manageRoleForm.value.roleId
       ManageRoleList.push(manageRole);
     }
+
+
 
 
     for (let id in selectedGroupIds) {
@@ -158,9 +216,31 @@ export class ManageRoleComponent implements OnInit {
       let manageRole: any = {};
       manageRole.groupId = selectedGroupIds[id];
       manageRole.id = "";
+      manageRole.resourceGroupId = "";
       manageRole.resourceId = "";
       manageRole.roleId = this.manageRoleForm.value.roleId
 
+      ManageRoleList.push(manageRole);
+    }
+    for (let id in selectedResources) {
+
+      let manageRole: any = {};
+      manageRole.groupId = "";
+      manageRole.id = "";
+      manageRole.resourceGroupId = "";
+      manageRole.resourceId = "";
+      manageRole.resourceFormId = selectedResources[id]
+      manageRole.roleId = this.manageRoleForm.value.roleId
+
+      ManageRoleList.push(manageRole);
+    }
+
+    for (let id in selectedResGroup) {
+      let manageRole: any = {};
+      manageRole.resourceGroupId = selectedResGroup[id]
+      manageRole.id = "";
+      // manageRole.resourceId = selectedSubResources[id]
+      manageRole.roleId = this.manageRoleForm.value.roleId
       ManageRoleList.push(manageRole);
     }
 
@@ -207,6 +287,16 @@ export class ManageRoleComponent implements OnInit {
       if (item.resourceID == id) {
         return true;
 
+      }
+    }
+    return result;
+  }
+
+  getResourceGroupDisable(id) {
+    let result = false;
+    for (let item of this.manageRoleArr) {
+      if (item.resourceGroupID == id) {
+        return true;
       }
     }
     return result;
