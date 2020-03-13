@@ -1,1 +1,1 @@
-Dynamic Core-UI application
+Dynamic Core-UI application based design
