@@ -40,10 +40,10 @@
                                 <div class="form-group">
                                     <label>Restrictions </label>
                                     <select class="form-control" formControlName="restrictionId" [(ngModel)]="restriction">
-                                    <option selected value="">-- Select Resource --</option>
-                                    <option *ngFor="let item of data">{{item}}</option>
+                                  <option selected value="">-- Select Resource --</option>
+                                  <option *ngFor="let item of resourceData">{{item}}</option>
 
-                                </select>
+                              </select>
                                     <div class="invalid-feedback">
                                         <div>Please Select Resource</div>
                                     </div>
@@ -52,34 +52,14 @@
                         </div>
                         <div [ngSwitch]="restriction">
 
-
                             <div class="row" *ngSwitchCase="'Resource Group'">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Restrict Resouce Group </label>
                                         <div class="custom-control custom-checkbox">
-                                            <label formArrayName="resourceGroup" *ngFor="let subRes of manageRoleForm.controls.resourceGroup['controls']; let i = index" [hidden]="getResourceGroupDisable(resourceGroupList[i].id)" class="col-sm-6 col-md-3 col-lg-2">
-                              <input type="checkbox" [formControlName]="i" (change)="resGroup(subRes,resourceGroupList[i].id)">
-                              {{resourceGroupList[i].resourceGroupName}}
-                          </label>
-                                        </div>
-
-                                        <div class="invalid-feedback">
-                                            <div>Please Select Sub Resource</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row" *ngSwitchCase="'Resources'">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label>Restrict Resources </label>
-                                        <div class="custom-control custom-checkbox">
-                                            <label formArrayName="resourceFormArray" *ngFor="let subRes of manageRoleForm.controls.resourceFormArray['controls']; let i = index" [hidden]="getGroupDisable(resources[i].id)" class="col-sm-6 col-md-3 col-lg-2">
-                                    <input type="checkbox" [formControlName]="i"
-                                        (change)="res(subRes,resources[i].id)">
-                                    {{resources[i].resourceName}}
+                                            <label formArrayName="resourceGroupFormArray" *ngFor="let subRes of manageRoleForm.controls.resourceGroupFormArray['controls']; let i = index" [hidden]="getResourceGroupDisable(resourceGroupList[i].id)" class="col-sm-6 col-md-3 col-lg-2">
+                                    <input type="checkbox" [formControlName]="i" (change)="resGroup(subRes,resourceGroupList[i].id)">
+                                    {{resourceGroupList[i].resourceGroupName}}
                                 </label>
                                         </div>
 
@@ -89,17 +69,33 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row" *ngSwitchCase="'Resources'">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Restrict Resouce Group </label>
+                                        <div class="custom-control custom-checkbox">
+                                            <label formArrayName="subResourceGroupFormArray" *ngFor="let subRes of manageRoleForm.controls.subResourceGroupFormArray['controls']; let i = index" [hidden]="getsubResourceDisable(subResourceGroupList[i].id)" class="col-sm-6 col-md-3 col-lg-2">
+                                        <input type="checkbox" [formControlName]="i" (change)="subResGroup(subRes,subResourceGroupList[i].id)">
+                                        {{subResourceGroupList[i].resourceName}}
+                                    </label>
+                                        </div>
 
+                                        <div class="invalid-feedback">
+                                            <div>Please Select Sub Resource</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row" *ngSwitchCase="'Sub Resources'">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Resource </label>
                                         <select formControlName="resourceId" class="form-control" (change)="getSubResource()" [ngClass]="{'is-invalid': manageRoleForm.get('resourceId').touched && manageRoleForm.get('resourceId').invalid}">
-                                  <option selected value="">-- Select Resource --</option>
-                                  <option *ngFor="let res of resourceList" value="{{res.id}}">
-                                      {{res.resourceName}}
-                                  </option>
-                              </select>
+                                          <option selected value="">-- Select Resource --</option>
+                                          <option *ngFor="let res of resourceList" value="{{res.id}}">
+                                              {{res.resourceName}}
+                                          </option>
+                                      </select>
                                         <div class="invalid-feedback">
                                             <div>Please Select Resource</div>
                                         </div>
@@ -108,17 +104,16 @@
                             </div>
 
 
-
                             <div class="row" *ngSwitchCase="'Sub Resources'">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Sub Resource </label>
                                         <div class="custom-control custom-checkbox">
-                                            <label formArrayName="subResourceId" *ngFor="let subRes of manageRoleForm.controls.subResourceId['controls']; let i = index" [hidden]="getsubResourceDisable(subResourceList[i].id)" class="col-sm-6 col-md-3 col-lg-2">
-                                      <input type="checkbox" [formControlName]="i"
-                                          (change)="test(subRes,subResourceList[i].id)">
-                                      {{subResourceList[i].resourceName}}
-                                  </label>
+                                            <label formArrayName="subResourceId" *ngFor="let subRes of manageRoleForm.controls.subResourceId['controls']; let i = index" [hidden]="getSubResourceGroupDisable(subResourceList[i].id)" class="col-sm-6 col-md-3 col-lg-2">
+                                              <input type="checkbox" [formControlName]="i"
+                                                  (change)="test(subRes,subResourceList[i].id)">
+                                              {{subResourceList[i].resourceName}}
+                                          </label>
                                         </div>
 
                                         <div class="invalid-feedback">
@@ -130,23 +125,6 @@
                         </div>
 
 
-                        <!-- <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Resource Group </label>
-                                    <select formControlName="resourceGroupId" class="form-control">
-                                    <option value="">-- Select Group --</option>
-                                    <option *ngFor="let resourceGroup of resourceGroupList"
-                                        value="{{resourceGroup.id}}">
-                                        {{resourceGroup.resourceGroupName}}
-                                    </option>
-                                </select>
-                                    <div class="invalid-feedback">
-                                        <div>Please Resource Group</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
 
                         <!-- <div class="row">
                           <div class="col-sm-12">
@@ -176,7 +154,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <i class="fa fa-align-justify"></i> Restricted Resources
+                        <i class="fa fa-align-justify"></i> List
                     </div>
                     <div class="card-body">
                         <table class="table table-responsive-sm table-bordered table-striped table-sm">
@@ -186,7 +164,8 @@
                                     <th>Role</th>
                                     <th>Resource</th>
                                     <th>Resource URL</th>
-                                    <th>Parent Resource</th>
+                                    <th>Sub Resources</th>
+                                    <th>Sub Resource URL</th>
                                     <th>Resource Group</th>
                                     <!-- <th>Group</th> -->
                                     <th style="width: 100px; text-align: center;">Action</th>
@@ -198,7 +177,8 @@
                                     <td>{{data.roleName}}</td>
                                     <td>{{data.resourceName}}</td>
                                     <td>{{data.resourceURL}}</td>
-                                    <td>{{data.parentResource}}</td>
+                                    <td>{{data.subResources}}</td>
+                                    <td>{{data.subResourceURL}}</td>
                                     <td>{{data.resourceGroupName}}</td>
                                     <!-- <td>{{data.groupName}}</td> -->
                                     <td class="text-right">
